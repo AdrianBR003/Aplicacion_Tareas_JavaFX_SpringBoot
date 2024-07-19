@@ -50,6 +50,8 @@ public class IndexControlador implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tareaTabla.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); // Solo selecciona un elemento de la tabla, sobre todo para modificar y eliminar solo uno
         configurarColumnas();
+        // Cargar configuracion de la base de datos
+        listarTareas();
     }
 
     private void configurarColumnas(){
@@ -57,5 +59,11 @@ public class IndexControlador implements Initializable {
         nombreTareaColumna.setCellValueFactory(new PropertyValueFactory<>("nombreTarea"));
         responsableTareaColumna.setCellValueFactory(new PropertyValueFactory<>("responsable"));
         estatusTareaColumna.setCellValueFactory(new PropertyValueFactory<>("estatus"));
+    }
+    private void listarTareas(){ // Llamar los datos desde la BD
+        logger.info("Ejecutando listado de Tareas");
+        tareasList.clear();
+        tareasList.addAll(tareaServicio.listarTareas()); // Nos regresa todos los elementos de tipo Tarea
+        tareaTabla.setItems(tareasList); // Relaciona la lista observable, y luego aplica en la tabla (en Swing se crea el modelo, que en este caso es la Lista Observable)
     }
 }
